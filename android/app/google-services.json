@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "102025350143",
+    "project_id": "eazytask-kiosk",
+    "storage_bucket": "eazytask-kiosk.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:102025350143:android:cab31f4ab4221672d7b5ca",
+        "android_client_info": {
+          "package_name": "com.eazytask.kiosk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "102025350143-kp9ee16fukklj6e0a8sqq08597p23lac.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEdxKdCFTz1Gyl9n_19147oJ550S7EA78"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "102025350143-kp9ee16fukklj6e0a8sqq08597p23lac.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

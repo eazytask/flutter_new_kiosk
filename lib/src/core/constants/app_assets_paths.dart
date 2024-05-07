@@ -1,0 +1,4 @@
+class AppAssetPaths {
+  AppAssetPaths._();
+
+}
