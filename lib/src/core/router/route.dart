@@ -9,6 +9,8 @@ import 'package:kiosk/src/feature/employees/presentation/screens/employee.screen
 import 'package:kiosk/src/feature/home/presentation/screens/start_unscheduled_shift.screen.dart';
 import 'package:flutter/material.dart';
 
+import '../../feature/projects/project.screen.dart';
+
 class AppRouter {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     cPrint("Navigating to ${settings.name}");
@@ -73,6 +75,18 @@ class AppRouter {
             return const EmployeeScreen();
           },
         );
+
+
+      case RouteConstants.projectScreen:
+      // final todoModel = settings.arguments;
+        return MaterialPageRoute(
+          settings: const RouteSettings(name: RouteConstants.projectScreen),
+          builder: (context) {
+            return const ProjectListScreen();
+          },
+        );
+
+
 
     }
 

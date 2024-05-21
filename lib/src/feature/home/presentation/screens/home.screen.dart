@@ -21,7 +21,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/domain/entities/shift.entity.dart';
-
+import '../../data/models/start_unscheduled_shift_request.model.dart';
 class HomeScreen extends StatefulWidget {
   final Employee employee;
   final int projectId;
@@ -47,6 +47,10 @@ class _HomeScreenState extends State<HomeScreen> {
   bool loading = false;
 
   TextEditingController commentController = TextEditingController();
+
+  TextEditingController remarksController = TextEditingController();
+  TextEditingController ratePerHourController = TextEditingController();
+  TextEditingController projectController = TextEditingController();
 
   Future<void> fetchJobTypes() async {
     if (!mounted) return;
@@ -114,18 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       if (base64Img != null) {
         if (!mounted) return;
-        Navigator.of(context).pushNamed(
-          RouteConstants.startUnscheduledScreen,
-          arguments: StartUnscheduledScreen(
-            employee: widget.employee,
-            jobType: _jobType ?? '-',
-            jobTypeId: _selectedJobTypeId ?? '0',
-            base64Image: base64Image ?? '',
-            image: File(image.path),
-            projectName: widget.projectName,
-            projectId: widget.projectId,
-          ),
-        );
+        startUnscheduledShift();
       }
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
@@ -264,6 +257,51 @@ class _HomeScreenState extends State<HomeScreen> {
     return canSignIn;
   }
 
+  Future<void> startUnscheduledShift() async {
+    setState(() {
+      loading = true;
+    });
+    if (!mounted) return;
+    var baseUrl = context.read<ClientConnectionProvider>().baseUrl;
+    return await context
+        .read<HomeProvider>()
+        .startUnscheduledShift(
+        context,
+        baseUrl,
+        StartUnscheduledShiftRequest(
+            employeeId: widget.employee.id,
+            latitude: '',
+            longitude: '',
+            projectId: widget.projectId.toString(),
+            jobTypeId: _selectedJobTypeId ?? '0',
+            remarks: remarksController.text,
+            ratePerHour: ratePerHourController.text,
+            image: base64Image ?? '',
+            comment: commentController.text,
+            authToken: context.read<AuthProvider>().authToken!))
+        .whenComplete(() async {
+
+      Shift? shift = context.read<HomeProvider>().shift;
+      setState(() {
+        loading = false;
+      });
+      if (shift != null) {
+        setState(() {
+          loading = true;
+        });
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          RouteConstants.homeScreen,
+              (route) => false,
+          arguments: HomeScreen(
+            employee: widget.employee,
+            projectName: widget.projectName,
+            shift: shift,
+            projectId: int.parse(widget.projectId.toString() ?? '0'),
+          ),
+        );
+      }
+    });
+  }
   @override
   void initState() {
     if (widget.shift == null) {
@@ -580,39 +618,89 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         );
                       })
-                  : Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.green,
-                            borderRadius: BorderRadius.circular(5)),
-                        clipBehavior: Clip.hardEdge,
-                        child: InkWell(
-                          onTap: () {
-                            if (widget.shift == null) {
-                              pickImage();
-                            }
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Text(
-                                  'Start Unscheduled Shift',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                  : Column(
+                children: [
+
+                  // TextFormField(
+                  //   controller: projectController,
+                  //   decoration: const InputDecoration(labelText: 'Site / Venue'),
+                  //   readOnly: true,
+                  // ),
+                  // const SizedBox(
+                  //   height: 10,
+                  // ),
+                  TextFormField(
+                    controller: ratePerHourController,
+                    decoration: const InputDecoration(labelText: 'Rate Per Hour'),
+                    keyboardType: TextInputType.number,
+                    validator: (val) {
+                      if (val == null || val.isEmpty) {
+                        return 'Please enter an amount';
+                      } else {
+                        if (double.parse(val) <= 0) {
+                          return 'Please enter a valid amount';
+                        }
+                      }
+                      return null;
+                    },
+                  ),
+                  // const SizedBox(
+                  //   height: 10,
+                  // ),
+                  // TextFormField(
+                  //   controller: remarksController,
+                  //   decoration: const InputDecoration(labelText: 'Remarks'),
+                  // ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    controller: commentController,
+                    decoration: const InputDecoration(labelText: 'Signin/out Comment'),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+
+                  !loading ?
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(5)),
+                    clipBehavior: Clip.hardEdge,
+                    child: InkWell(
+
+                      onTap: () {
+                        if (widget.shift == null) {
+                          pickImage();
+                        }
+                      },
+                      child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child:
+
+                          const Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Start Unscheduled Shift',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                              ],
-                            ),
-                          ),
-                        ),
+                              ),
+                            ],
+                          )
                       ),
                     ),
+                  ):
+                  const Center(
+                    child: CircularProgressIndicator(), // Display loading indicator
+                  )
+                ],
+              ),
               const SizedBox(
                 height: 18,
               ),
