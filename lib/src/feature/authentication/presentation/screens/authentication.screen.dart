@@ -130,16 +130,15 @@ class _LoginScreenState extends State<LoginScreen> {
           }
           return SafeArea(
             child: Scaffold(
-              resizeToAvoidBottomInset: false,
-              body: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Column(
+              body: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 80),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Image.asset(
@@ -172,7 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     }
                                   }
                                 },
-
+                
                                 style: const TextStyle(fontSize: 20),
                                 decoration: InputDecoration(
                                   enabled: true,
@@ -239,7 +238,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   contentPadding: const EdgeInsets.symmetric(
                                     horizontal: 10,
                                     vertical: 21,
-
+                
                                   ),
                                   border: InputBorder.none,
                                   prefixIcon: const Icon(Icons.lock_outline),
@@ -300,37 +299,37 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ],
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: FutureBuilder<String>(
-                            future: deviceInfoDetails,
-                            builder: (context, AsyncSnapshot<String> snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const SizedBox(
-                                  width: 50,
-                                  child: LinearProgressIndicator(minHeight: 4),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: FutureBuilder<String>(
+                              future: deviceInfoDetails,
+                              builder: (context, AsyncSnapshot<String> snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const SizedBox(
+                                    width: 50,
+                                    child: LinearProgressIndicator(minHeight: 4),
+                                  );
+                                }
+                                String projectVersion = deviceInfo.projectVersion;
+                                String mobileAppVersionCode =
+                                    deviceInfo.mobileAppVersionCode;
+                                return Text(
+                                  "",
+                                  // "${projectVersion}v ($mobileAppVersionCode)",
+                                  // style: Theme.of(context)
+                                  //     .textTheme
+                                  //     .subtitle2!
+                                  //     .copyWith(
+                                  //     color: (Theme.of(context).brightness ==
+                                  //         Brightness.dark)
+                                  //         ? AppColors.kLighterGrey.withAlpha(110)
+                                  //         : AppColors.kLighterGrey.withAlpha(150)),
                                 );
-                              }
-                              String projectVersion = deviceInfo.projectVersion;
-                              String mobileAppVersionCode =
-                                  deviceInfo.mobileAppVersionCode;
-                              return Text(
-                                "",
-                                // "${projectVersion}v ($mobileAppVersionCode)",
-                                // style: Theme.of(context)
-                                //     .textTheme
-                                //     .subtitle2!
-                                //     .copyWith(
-                                //     color: (Theme.of(context).brightness ==
-                                //         Brightness.dark)
-                                //         ? AppColors.kLighterGrey.withAlpha(110)
-                                //         : AppColors.kLighterGrey.withAlpha(150)),
-                              );
-                            }),
-                      ),
-                    ],
+                              }),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

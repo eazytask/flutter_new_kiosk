@@ -291,16 +291,21 @@ class _HomeScreenState extends State<HomeScreen> {
         setState(() {
           loading = true;
         });
+        // Navigator.of(context).pushNamedAndRemoveUntil(
+        //   RouteConstants.homeScreen,
+        //       (route) => false,
+        //   arguments: HomeScreen(
+        //     employee: widget.employee,
+        //     projectName: widget.projectName,
+        //     shift: shift,
+        //     projectId: int.parse(widget.projectId.toString() ?? '0'),
+        //   ),
+        // );
         Navigator.of(context).pushNamedAndRemoveUntil(
-          RouteConstants.homeScreen,
+          RouteConstants.employeeScreen,
               (route) => false,
-          arguments: HomeScreen(
-            employee: widget.employee,
-            projectName: widget.projectName,
-            shift: shift,
-            projectId: int.parse(widget.projectId.toString() ?? '0'),
-          ),
         );
+
       }
     });
   }
