@@ -1,6 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../../../core/domain/entities/shift.details.entity.dart';
+import '../../../../core/domain/entities/shift.entity.dart';
+
 part 'employee.entity.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake)
@@ -25,6 +28,8 @@ class Employee extends Equatable {
   final String? firstAidLicense;
   final DateTime? firstAidExpireDate;
   final String? image;
+  // Add the new field
+  final List<ShiftDetails>? shiftDetails;
 
   const Employee({
     required this.id,
@@ -44,6 +49,7 @@ class Employee extends Equatable {
     required this.firstAidLicense,
     required this.firstAidExpireDate,
     required this.image,
+    this.shiftDetails,
   });
 
   factory Employee.fromJson(Map<String, dynamic> json) =>
@@ -70,5 +76,6 @@ class Employee extends Equatable {
         firstAidLicense,
         firstAidExpireDate,
         image,
+        shiftDetails,
       ];
 }

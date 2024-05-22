@@ -28,6 +28,9 @@ Employee _$EmployeeFromJson(Map<String, dynamic> json) => Employee(
           ? null
           : DateTime.parse(json['first_aid_expire_date'] as String),
       image: json['image'] as String?,
+      shiftDetails: (json['shiftDetails'] as List<dynamic>?)
+          ?.map((e) => ShiftDetails.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$EmployeeToJson(Employee instance) => <String, dynamic>{

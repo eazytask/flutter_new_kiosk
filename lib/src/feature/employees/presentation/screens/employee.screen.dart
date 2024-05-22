@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import 'package:kiosk/src/core/constants/app_strings.dart';
 import 'package:kiosk/src/core/constants/constants.dart';
 import 'package:kiosk/src/core/domain/entities/project.entity.dart';
@@ -21,6 +22,8 @@ import 'package:provider/provider.dart';
 
 import 'package:kiosk/src/feature/projects/presentation/provider/selected.project.dart';
 import '../../../../../constants/mainbutton.dart';
+import '../../../../core/domain/entities/job_type.entity.dart';
+import '../../../home/presentation/providers/home.provider.dart';
 import '../../../projects/project.screen.dart';
 import 'package:kiosk/src/core/presentation/widgets/bottom_nav_bar.dart';
 
@@ -42,6 +45,7 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
   String? _selectedProjectName;
   List<Project> projects = [];
   List<String> empFilter = ['all', 'shift', 'inducted'];
+  List<JobType> jobTypes = [];
   String? _selectedEmpFilter;
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
@@ -84,7 +88,23 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
         loaded = true;
         emp = context.read<EmployeeProvider>().employees;
 
-        // print(emp);
+      });
+    });
+  }
+
+  Future<void> fetchJobTypes() async {
+    if (!mounted) return;
+    var baseUrl = context.read<ClientConnectionProvider>().baseUrl;
+    return await context
+        .read<HomeProvider>()
+        .fetchJobType(
+        context,
+        baseUrl,
+        CommonGetRequest(
+            authToken: context.read<AuthProvider>().authToken!))
+        .whenComplete(() async {
+      setState(() {
+        jobTypes = context.read<HomeProvider>().jobTypes;
       });
     });
   }
@@ -93,39 +113,8 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
   final TextEditingController _pinController = TextEditingController();
   final FocusNode focusNode = FocusNode();
 
-  bool _searchBoolean = false;
   List<Employee> emp = [];
 
-  Widget _searchTextField() {
-    return TextFormField(
-      onChanged: (text) {
-        text = text.toLowerCase();
-        setState(() {
-          emp = context.read<EmployeeProvider>().employees.where((item) {
-            var name =
-                '${item.fName?.toLowerCase()} ${item.mName?.toLowerCase()} ${item.lName?.toLowerCase()}';
-            return name.contains(text);
-          }).toList();
-        });
-      },
-      focusNode: focusNode,
-      autofocus: true,
-      controller: _searchController,
-      cursorColor: Colors.white,
-      style: const TextStyle(
-        color: Colors.white,
-        fontSize: 20,
-      ),
-      decoration: const InputDecoration(
-        border: InputBorder.none,
-        hintText: 'Search',
-        hintStyle: TextStyle(
-          color: Colors.white60,
-          fontSize: 20,
-        ),
-      ),
-    );
-  }
   alertBox(int employeeIndex) {
     // print(emp[employeeIndex]);
 
@@ -345,6 +334,22 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
     });
   }
 
+  String getShiftTimeString(DateTime startTime, DateTime endTime){
+    var result = "";
+    result += DateFormat.Hm().format(startTime);
+    result += ' to ';
+    result += DateFormat.Hm().format(endTime);
+    return result;
+  }
+  String getJobTypeNname(int jobTypeId){
+    var result = "";
+    if(jobTypeId > 0){
+      var jobType = jobTypes.firstWhere((element) => element.id == jobTypeId);
+      result = jobType.name ?? "";
+    }
+    return result;
+  }
+
   final ProgressBar _sendingMsgProgressBar = ProgressBar();
 
   @override
@@ -367,7 +372,10 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
       _selectedProjectName = context.read<SelectedProjectProvider>().projectName;;
       _selectedProjectId = context.read<SelectedProjectProvider>().projectId;
       _selectedEmpFilter = widget.filterType;
-      Future.microtask(() async => await fetchEmployees());
+      Future.microtask(() async => await fetchJobTypes()).whenComplete(() {
+        Future.microtask(() async => await fetchEmployees());
+      });
+
     });
     super.initState();
   }
@@ -565,7 +573,7 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                                             CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                emp[index].fName ?? '-',
+                                                emp[index].fName.toString() + ' ' + emp[index].lName.toString(),
                                                 style: TextStyle(
                                                   fontSize: 17,
                                                   fontWeight: FontWeight.w500,
@@ -580,18 +588,40 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                                                   // color: employeelist[index].tclr,
                                                 ),
                                               ),
+                                              Text(
+                                                emp[index].shiftDetails!.isNotEmpty ?
+                                                getShiftTimeString(
+                                                  emp[index].shiftDetails?[0].shiftStart as DateTime,
+                                                  emp[index].shiftDetails?[0].shiftEnd as DateTime,
+                                                ) +' ( ' + getJobTypeNname(
+                                                    emp[index].shiftDetails![0].jobTypeId as int
+                                                ) + ' )':
+                                                '',
+                                                style: TextStyle(
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.w500,
+                                                  // color: emp[index].tclr ?? '',
+                                                ),
+                                              ),
+
+                                              // Text(
+                                              //   emp[index].shiftDetails!.isNotEmpty ?
+                                              //   getJobTypeNname(
+                                              //       emp[index].shiftDetails![0].jobTypeId as int
+                                              //   ):
+                                              //   '',
+                                              //   style: TextStyle(
+                                              //     fontSize: 13,
+                                              //     fontWeight: FontWeight.w500,
+                                              //     // color: emp[index].tclr ?? '',
+                                              //   ),
+                                              // ),
                                             ],
                                           ),
                                         ],
                                       ),
-                                      Text(
-                                        '#${emp[index].licenseNo}',
-                                        style: TextStyle(
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w500,
-                                          // color: emp[index].tclr ?? '',
-                                        ),
-                                      ),
+
+
                                     ],
                                   ),
                                 ),
