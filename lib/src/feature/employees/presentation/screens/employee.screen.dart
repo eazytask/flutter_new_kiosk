@@ -84,7 +84,7 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
         loaded = true;
         emp = context.read<EmployeeProvider>().employees;
 
-        print(emp);
+        // print(emp);
       });
     });
   }
@@ -127,7 +127,7 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
     );
   }
   alertBox(int employeeIndex) {
-    print(emp[employeeIndex]);
+    // print(emp[employeeIndex]);
 
     showGeneralDialog(
         barrierDismissible: true,

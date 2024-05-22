@@ -279,6 +279,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             // const SizedBox(
                             //   height: 15,
                             // ),
+                            !_isLoading ?
                             Button(
                                 height: 55,
                                 width: double.infinity,
@@ -293,7 +294,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ),
                                 onTap: login,
-                                colorB: const Color(0xff6EC2FA)),
+                                colorB: const Color(0xff6EC2FA)):
+                            const Center(
+                              child: CircularProgressIndicator(), // Display loading indicator
+                            ),
                             SizedBox(
                               height: 50,
                             ),
