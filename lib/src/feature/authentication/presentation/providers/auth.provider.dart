@@ -13,6 +13,9 @@ import 'package:kiosk/src/feature/authentication/domain/usecases/login.usecase.d
 import 'package:kiosk/src/feature/authentication/domain/usecases/logout.usecase.dart';
 import 'package:kiosk/src/injection_container.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../projects/presentation/provider/selected.project.dart';
 
 enum AuthStatus {
   NOT_DETERMINED,
@@ -39,6 +42,7 @@ LogoutUsecase _logoutUsecase = sl<LogoutUsecase>();
     if (res.isRight()) {
       bool isRemoved = res.getOrElse(() => true);
       if (isRemoved) {
+        context.read<SelectedProjectProvider>().saveToPrefs("", "");
         user = null;
         authStatus = AuthStatus.NOT_LOGGED_IN;
         Navigator.of(context).pushNamedAndRemoveUntil(RouteConstants.loginScreen, (route) => false);

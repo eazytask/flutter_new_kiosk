@@ -11,6 +11,7 @@ import 'package:kiosk/src/feature/authentication/presentation/providers/auth.pro
 import 'package:kiosk/src/feature/employees/presentation/screens/employee.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kiosk/src/feature/projects/presentation/provider/selected.project.dart';
 import 'package:provider/provider.dart';
 
 import 'package:kiosk/src/feature/projects/project.screen.dart';
@@ -82,6 +83,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
+
+    context.read<SelectedProjectProvider>().loadValue().whenComplete(() {
+      if(context.read<SelectedProjectProvider>().projectId != ""){
+        Navigator.pushNamedAndRemoveUntil(context, RouteConstants.employeeScreen,(_)=>false );
+      }
+    });
+
+
     _getCurrentUserFuture = context.read<AuthProvider>().getCurrentUser();
     try {
       context.read<RemoteConfigProvider>().remoteConfig?.fetchAndActivate();
@@ -90,6 +99,8 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     deviceInfo = DeviceInfo();
     deviceInfoDetails = deviceInfo.getUserAgent();
+
+
     super.initState();
   }
 
@@ -119,6 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
           }
           return SafeArea(
             child: Scaffold(
+              resizeToAvoidBottomInset: false,
               body: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25),
                 child: Form(
@@ -256,18 +268,18 @@ class _LoginScreenState extends State<LoginScreen> {
                             const SizedBox(
                               height: 7,
                             ),
-                            const Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text(
-                                  'Forgot your password?',
-                                  style: TextStyle(fontSize: 17, color: Color(0xff46A0DD)),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
+                            // const Row(
+                            //   mainAxisAlignment: MainAxisAlignment.end,
+                            //   children: [
+                            //     Text(
+                            //       'Forgot your password?',
+                            //       style: TextStyle(fontSize: 17, color: Color(0xff46A0DD)),
+                            //     ),
+                            //   ],
+                            // ),
+                            // const SizedBox(
+                            //   height: 15,
+                            // ),
                             Button(
                                 height: 55,
                                 width: double.infinity,

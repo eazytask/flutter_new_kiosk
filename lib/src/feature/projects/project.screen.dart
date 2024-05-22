@@ -96,13 +96,7 @@ class _ProjectListScreenState extends State<ProjectListScreen> {
                             projects[index].id.toString(),
                             projects[index].projectName ?? '').whenComplete(() {
 
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const EmployeeScreen()),
-                                  (route) => false);
-
-                          // Navigator.pushNamedAndRemoveUntil(context, RouteConstants.employeeScreen,(_)=>false );
+                          Navigator.pushNamedAndRemoveUntil(context, RouteConstants.employeeScreen,(_)=>false );
                         });
 
                       },

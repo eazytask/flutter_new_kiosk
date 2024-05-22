@@ -83,6 +83,8 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
       setState(() {
         loaded = true;
         emp = context.read<EmployeeProvider>().employees;
+
+        print(emp);
       });
     });
   }

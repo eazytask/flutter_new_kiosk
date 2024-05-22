@@ -263,6 +263,8 @@ class _HomeScreenState extends State<HomeScreen> {
     });
     if (!mounted) return;
     var baseUrl = context.read<ClientConnectionProvider>().baseUrl;
+
+
     return await context
         .read<HomeProvider>()
         .startUnscheduledShift(
