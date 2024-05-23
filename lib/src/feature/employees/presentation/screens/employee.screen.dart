@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:kiosk/src/core/constants/app_strings.dart';
 import 'package:kiosk/src/core/constants/constants.dart';
 import 'package:kiosk/src/core/domain/entities/project.entity.dart';
+import 'package:kiosk/src/core/domain/entities/shift.details.entity.dart';
 import 'package:kiosk/src/core/presentation/widgets/app_bar.widget.dart';
 import 'package:kiosk/src/core/presentation/widgets/loading_overlay.dart';
 import 'package:kiosk/src/core/presentation/widgets/wave_loading.widget.dart';
@@ -84,10 +85,10 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                 authToken: context.read<AuthProvider>().authToken!))
         .whenComplete(() {
       // emp = context.read<EmployeeProvider>().employees;
+
       setState(() {
         loaded = true;
         emp = context.read<EmployeeProvider>().employees;
-
       });
     });
   }
@@ -341,6 +342,33 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
     result += DateFormat.Hm().format(endTime);
     return result;
   }
+
+  Color getBackgroundColor(List<ShiftDetails> shiftDetails){
+    var result = Colors.transparent;
+    var now  = DateTime.now();
+
+    if(shiftDetails.isNotEmpty){
+
+      var shiftDetail = shiftDetails[0];
+      if(shiftDetail.singOut == null && shiftDetail.singIn != null){
+        if(now.isAfter(shiftDetail.shiftEnd as DateTime)){
+          result = Colors.redAccent;
+        }
+      }
+      else if(shiftDetail.singIn != null){
+        result = Colors.greenAccent;
+      }
+      else if(shiftDetail.singIn == null){
+        if(shiftDetail.shiftStart!.isBefore(now)){
+          result = Colors.redAccent;
+        }
+      }
+
+    }
+    return result;
+  }
+
+
   String getJobTypeNname(int jobTypeId){
     var result = "";
     if(jobTypeId > 0){
@@ -518,7 +546,7 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                                   borderRadius: BorderRadius.circular(12),
                                   border: Border.all(
                                       width: 0.5, color: const Color(0xff6EC2FA)),
-                                  // color: employeelist[index].clr,
+                                  color: getBackgroundColor(emp[index].shiftDetails as List<ShiftDetails>),
                                 ),
                                 child: Padding(
                                   padding:
@@ -577,7 +605,7 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                                                 style: TextStyle(
                                                   fontSize: 17,
                                                   fontWeight: FontWeight.w500,
-                                                  // color: employeelist[index].tclr,
+                                                  color: emp[index].shiftDetails!.isNotEmpty ? Colors.white : Colors.black,
                                                 ),
                                               ),
                                               Text(
@@ -585,7 +613,7 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                                                 style: TextStyle(
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w400,
-                                                  // color: employeelist[index].tclr,
+                                                  color: emp[index].shiftDetails!.isNotEmpty ? Colors.white : Colors.black,
                                                 ),
                                               ),
                                               Text(
@@ -600,22 +628,11 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                                                 style: TextStyle(
                                                   fontSize: 13,
                                                   fontWeight: FontWeight.w500,
-                                                  // color: emp[index].tclr ?? '',
+                                                  color: emp[index].shiftDetails!.isNotEmpty ? Colors.white : Colors.black,
                                                 ),
                                               ),
 
-                                              // Text(
-                                              //   emp[index].shiftDetails!.isNotEmpty ?
-                                              //   getJobTypeNname(
-                                              //       emp[index].shiftDetails![0].jobTypeId as int
-                                              //   ):
-                                              //   '',
-                                              //   style: TextStyle(
-                                              //     fontSize: 13,
-                                              //     fontWeight: FontWeight.w500,
-                                              //     // color: emp[index].tclr ?? '',
-                                              //   ),
-                                              // ),
+
                                             ],
                                           ),
                                         ],
