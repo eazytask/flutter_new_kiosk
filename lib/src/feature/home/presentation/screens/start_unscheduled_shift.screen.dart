@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter_svg/svg.dart';
 import 'package:kiosk/src/core/constants/constants.dart';
 import 'package:kiosk/src/core/domain/entities/common_get_request.model.dart';
 import 'package:kiosk/src/core/domain/entities/project.entity.dart';
@@ -11,11 +12,14 @@ import 'package:kiosk/src/feature/authentication/presentation/providers/auth.pro
 import 'package:kiosk/src/feature/client_connection/presentation/providers/client.provider.dart';
 import 'package:kiosk/src/feature/employees/domain/entities/employee.entity.dart';
 import 'package:kiosk/src/feature/employees/presentation/providers/employee.provider.dart';
+import 'package:kiosk/src/feature/employees/presentation/screens/employee.screen.dart';
 import 'package:kiosk/src/feature/home/data/models/start_unscheduled_shift_request.model.dart';
 import 'package:kiosk/src/feature/home/presentation/providers/home.provider.dart';
 import 'package:kiosk/src/feature/home/presentation/screens/home.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../../../core/constants/mainbutton.dart';
 
 class StartUnscheduledScreen extends StatefulWidget {
   final String jobType;
@@ -46,6 +50,8 @@ class _StartUnscheduledScreenState extends State<StartUnscheduledScreen> {
   TextEditingController ratePerHourController = TextEditingController();
   TextEditingController projectController = TextEditingController();
   TextEditingController commentController = TextEditingController();
+
+  final _fromTop = true;
 
   final ProgressBar _sendingMsgProgressBar = ProgressBar();
 
@@ -212,37 +218,37 @@ class _StartUnscheduledScreenState extends State<StartUnscheduledScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                ElevatedButton(
-                    onPressed: () {
+                Button(
+                    height: 50,
+                    width: 172,
+                    child: Center(
+                      child:
+                        loading
+                            ? SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                          ),
+                        )
+                            : Text(
+                          'Start',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight:
+                            FontWeight.w500,
+                            color: Colors.white,
+                          ),
+                        ),
+                    ),
+                    onTap: () {
                       if (_formKey.currentState!.validate()) {
                         startUnscheduledShift();
                       }
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          loading
-                              ? SizedBox(
-                            width: 20,
-                                  height: 20,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                  ),
-                                )
-                              : Text('Start',
-                              style: TextStyle(color: Colors.white)),
-                          // SizedBox(
-                          //   height: 20,
-                          //   width: 20,
-                          //   child: CircularProgressIndicator(
-                          //     color: Colors.white,
-                          //   ),
-                          // ),
-                        ],
-                      ),
-                    ))
+                    colorB:
+                    const Color(0xff0ABE52)
+                ),
               ],
             ),
           ),

@@ -19,6 +19,9 @@ import 'package:flutter/services.dart'
     show DeviceOrientation, SystemChrome, SystemUiOverlayStyle;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:responsive_framework/responsive_framework.dart';
+
+import 'feature/authentication/presentation/screens/authentication.screen.dart';
 
 class EazytaskKiosk extends StatefulWidget {
   final Future<FirebaseRemoteConfig> remoteConfig;
@@ -87,27 +90,42 @@ class _EazytaskKioskState extends State<EazytaskKiosk> {
                   snapshot.requireData;
             }
             return MaterialApp(
+              builder: (context, child) => ResponsiveWrapper.builder(
+                child,
+                maxWidth: 1200,
+                minWidth: 480,
+                defaultScale: true,
+                breakpoints: [
+                  const ResponsiveBreakpoint.resize(480, name: MOBILE),
+                  const ResponsiveBreakpoint.autoScale(800, name: TABLET),
+                  const ResponsiveBreakpoint.resize(1000, name: DESKTOP),
+                ],
+              ),
               title: 'Eazytask Kiosk',
               debugShowCheckedModeBanner: false,
               navigatorObservers: [
                 FirebaseAnalyticsObserver(analytics: analytics),
               ],
-              theme: LightTheme.getTheme.copyWith(
-                textTheme: GoogleFonts.sourceSansProTextTheme(
-                        Theme.of(context).textTheme)
-                    .copyWith(
-                  bodyText1: LightTheme.textTheme.bodyText1,
-                  bodyText2: LightTheme.textTheme.bodyText2,
-                  subtitle1: LightTheme.textTheme.subtitle1,
-                  subtitle2: LightTheme.textTheme.subtitle2,
-                  headline6: LightTheme.textTheme.headline6,
-                  headline5: LightTheme.textTheme.headline5,
-                  headline4: LightTheme.textTheme.headline4,
-                  headline3: LightTheme.textTheme.headline3,
-                  headline2: LightTheme.textTheme.headline2,
-                  headline1: LightTheme.textTheme.headline1,
-                ),
+              theme: ThemeData(
+                colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+                useMaterial3: true,
               ),
+              // theme: LightTheme.getTheme.copyWith(
+              //   textTheme: GoogleFonts.sourceSansProTextTheme(
+              //           Theme.of(context).textTheme)
+              //       .copyWith(
+              //     bodyText1: LightTheme.textTheme.bodyText1,
+              //     bodyText2: LightTheme.textTheme.bodyText2,
+              //     subtitle1: LightTheme.textTheme.subtitle1,
+              //     subtitle2: LightTheme.textTheme.subtitle2,
+              //     headline6: LightTheme.textTheme.headline6,
+              //     headline5: LightTheme.textTheme.headline5,
+              //     headline4: LightTheme.textTheme.headline4,
+              //     headline3: LightTheme.textTheme.headline3,
+              //     headline2: LightTheme.textTheme.headline2,
+              //     headline1: LightTheme.textTheme.headline1,
+              //   ),
+              // ),
               darkTheme: DarkTheme.getTheme.copyWith(
                 textTheme: GoogleFonts.sourceSansProTextTheme(
                         Theme.of(context).textTheme)
@@ -127,6 +145,7 @@ class _EazytaskKioskState extends State<EazytaskKiosk> {
               themeMode: provider.themeMode,
               initialRoute: RouteConstants.loginScreen,
               onGenerateRoute: AppRouter.onGenerateRoute,
+              home: const LoginScreen(),
             );
           },
         ),

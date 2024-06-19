@@ -55,7 +55,7 @@ DateTime getEndDate(DateTime date, DateTime endDate) {
 DateTime getAustralianDateTime() {
   final DateTime now = DateTime.now();
   final DateTime utc = now.toUtc();
-  final DateTime australianDateTime = utc.add(const Duration(hours: 11));
+  final DateTime australianDateTime = utc.add(const Duration(hours: 10));
   return DateTime.parse(australianDateTime.toString().replaceAll("Z", ''));
 }
 
@@ -67,7 +67,7 @@ DateTime getAuDateTime() {
 
   final DateTime now = DateTime.now();
   final DateTime utc = now.toUtc();
-  final DateTime australianDateTime = utc.add(const Duration(hours: 11));
+  final DateTime australianDateTime = utc.add(const Duration(hours: 10));
   return DateTime.parse(australianDateTime.toString().replaceAll("Z", ''));
 
 }

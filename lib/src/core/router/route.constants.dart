@@ -8,5 +8,6 @@ class RouteConstants {
   static const String homeScreen = "HomeScreen";
   static const String employeeScreen = "EmployeeScreen";
   static const String startUnscheduledScreen = "StartUnscheduledScreen";
+  static const String projectScreen = "ProjectScreen";
 
 }
