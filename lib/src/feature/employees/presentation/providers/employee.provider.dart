@@ -1,3 +1,4 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:dartz/dartz.dart';
 import 'package:kiosk/src/core/domain/entities/project.entity.dart';
 import 'package:kiosk/src/feature/home/presentation/screens/home.screen.dart';
@@ -129,7 +130,14 @@ class EmployeeProvider extends BaseProvider {
       (failure) {
         // setState(ViewState.Error);
         loading = false;
-        customSnackBar(context, failure.message);
+
+        Flushbar(
+          backgroundColor: Colors.red,
+          message: failure.message,
+          duration: const Duration(milliseconds: 4000),
+        ).show(context);
+
+        // customSnackBar(context, failure.message);
       },
       (Shift? shift) {
         _shift = shift;

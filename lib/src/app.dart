@@ -23,6 +23,8 @@ import 'package:responsive_framework/responsive_framework.dart';
 
 import 'feature/authentication/presentation/screens/authentication.screen.dart';
 
+import 'feature/projects/presentation/provider/selected.project.dart';
+
 class EazytaskKiosk extends StatefulWidget {
   final Future<FirebaseRemoteConfig> remoteConfig;
 
@@ -58,6 +60,7 @@ class _EazytaskKioskState extends State<EazytaskKiosk> {
 
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider<SelectedProjectProvider>(create: (_) => SelectedProjectProvider()),
         ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
         ChangeNotifierProvider<EmployeeProvider>(
             create: (_) => EmployeeProvider()),
