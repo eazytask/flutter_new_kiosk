@@ -10,6 +10,4 @@ class RouteConstants {
   static const String startUnscheduledScreen = "StartUnscheduledScreen";
   static const String projectScreen = "ProjectScreen";
 
-  static const String projectScreen = "ProjectScreen";
-
 }

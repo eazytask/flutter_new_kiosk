@@ -22,23 +22,23 @@ class LightTheme {
     // bodyText2: TextStyle(
     //     color: AppColors.kLabelColor,
     //     fontSize: 17.0),
-    bodyText1: TextStyle(
+    bodyLarge: TextStyle(
         color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold),
-    bodyText2: TextStyle(color: Colors.black, fontSize: 14),
-    caption: TextStyle(color: Colors.black),
+    bodyMedium: TextStyle(color: Colors.black, fontSize: 14),
+    bodySmall: TextStyle(color: Colors.black),
     //headline1: TextStyle(color: Colors.black),
-    headline1: TextStyle(
+    displayLarge: TextStyle(
         color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
     // headline2: TextStyle(color: Colors.black),
-    headline2: TextStyle(
+    displayMedium: TextStyle(
         color: Colors.black, fontWeight: FontWeight.normal, fontSize: 16),
-    headline3: TextStyle(color: Colors.black),
-    headline4: TextStyle(
+    displaySmall: TextStyle(color: Colors.black),
+    headlineMedium: TextStyle(
       color: Colors.black,
       fontSize: 22.0,
     ),
-    headline5: TextStyle(color: Colors.black, fontSize: 18.0),
-    headline6: TextStyle(color: Colors.black),
+    headlineSmall: TextStyle(color: Colors.black, fontSize: 18.0),
+    titleLarge: TextStyle(color: Colors.black),
   );
 
   static get getTheme => ThemeData(

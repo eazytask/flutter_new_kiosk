@@ -11,30 +11,30 @@ class DarkTheme {
     //   fontSize: 18.0,
     //   fontWeight: FontWeight.w400,
     // ),
-    bodyText1: TextStyle(
+    bodyLarge: TextStyle(
         color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
-    bodyText2: TextStyle(color: Colors.white, fontSize: 14),
+    bodyMedium: TextStyle(color: Colors.white, fontSize: 14),
     // bodyText2: TextStyle(color: AppColors.kLabelColor, fontSize: 17.0),
-    caption: TextStyle(color: AppColors.white),
-    subtitle1: TextStyle(
+    bodySmall: TextStyle(color: AppColors.white),
+    titleMedium: TextStyle(
       color: Colors.white,
       fontWeight: FontWeight.w400,
       fontSize: 16,
     ),
-    subtitle2: TextStyle(
+    titleSmall: TextStyle(
       color: Colors.white,
     ),
     // headline1: TextStyle(color: AppColors.white),
     // headline2: TextStyle(color: AppColors.white),
-    headline3: TextStyle(color: AppColors.white),
-    headline4: TextStyle(color: AppColors.white, fontSize: 22.0),
-    headline5: TextStyle(color: AppColors.white, fontSize: 18.0),
-    headline6: TextStyle(color: AppColors.white),
+    displaySmall: TextStyle(color: AppColors.white),
+    headlineMedium: TextStyle(color: AppColors.white, fontSize: 22.0),
+    headlineSmall: TextStyle(color: AppColors.white, fontSize: 18.0),
+    titleLarge: TextStyle(color: AppColors.white),
 
-    headline1: TextStyle(
+    displayLarge: TextStyle(
         color: AppColors.white, fontWeight: FontWeight.bold, fontSize: 20),
     // headline2: TextStyle(color: Colors.black),
-    headline2: TextStyle(
+    displayMedium: TextStyle(
         color: AppColors.white, fontWeight: FontWeight.normal, fontSize: 16),
   );
 
@@ -42,7 +42,6 @@ class DarkTheme {
     primaryColor: AppColors.primaryColor,
     primaryColorDark:  AppColors.kDarkGrey,
     primaryColorLight: AppColors.white,
-    bottomAppBarColor: AppColors.kLightGrey,
     scaffoldBackgroundColor: Colors.black,
     brightness: Brightness.dark,
     textTheme: textTheme,
@@ -84,7 +83,7 @@ class DarkTheme {
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: AppColors.primaryColor,
-    ),
+    ), bottomAppBarTheme: BottomAppBarTheme(color: AppColors.kLightGrey),
   );
 
   static Color getColor(Set<MaterialState> states) {

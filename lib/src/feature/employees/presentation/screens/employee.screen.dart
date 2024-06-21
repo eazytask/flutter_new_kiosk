@@ -146,7 +146,7 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                     decoration: const BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(20.0)),
                         color: Colors.white),
-                    height: 475,
+                    height: 375,
                     width: 430,
                     child: Padding(
                       padding: const EdgeInsets.only(top: 20),
